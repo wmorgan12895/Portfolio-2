@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8">
   <title>MY APP</title>
 </head>
 <body>
  <h2>home page</h2>
-<form action="/quotes" method="POST">
-  <input type="text" placeholder="Email" name="email"><br/>
-  <input type="password" placeholder="password" name="password"><br/>
-  <button type="submit">Submit</button>
-</form>
-<p id="note">Note, submit will create a new account if you do not have one.</p>
+ Task Name<input type = 'text' id = 'taskname'/>
+ Date of Task<input type = 'date' id='date'/>
+ Time<input type='time' id='time'/>
+ Email Notification<input type = 'radio' id="notify"/>
+ <input type = 'button' value = 'Add task'/>
+<div id = 'tasks'></div>
 </body>
+
 </html>
