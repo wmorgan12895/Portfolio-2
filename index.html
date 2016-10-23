@@ -1,15 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <meta charset="UTF-8">
   <title>MY APP</title>
 </head>
 <body>
-  May Node and Express be with you.
-<form action="/quotes" method="POST">
-  <input type="text" placeholder="name" name="name">
-  <input type="text" placeholder="quote" name="quote">
-  <button type="submit">Submit</button>
-</form>
+  <h2>home page</h2>
+  Task Name<input type = 'text' id = 'taskname'/>
+  Date of Task<input type = 'date' id='date'/>
+  Time<input type='time' id='time'/>
+  Email Notification<select id="emailNotify"> <option value="off">off</option> <option value="on">on</option></select>
+  Text Notification<select id="textNotify"/> <option value="off">off</option> <option value="on">on</option></select>
+  Phone Number<input type = 'text' id='phone'/>
+  <input type = 'button' id='addTask' value = 'Add task'/>
+  <div id = 'tasks'></div>
 </body>
+ <script>
+    $(document).ready(function() {
+
+          $("#addTask").click (function () {
+            $taskname = $("#taskname").val()
+            $date = $("#date").val()
+            $time = $("#time").val()
+            $emailNotify = $("#emailNotify").val()
+            $textNotify = $("#textNotify").val()
+            $phone = $("#phone").val()
+            $.post("/addTask", {taskname: $taskname, date: $date, time: $time, emailNotify: $emailNotify, textNotify: $textNotify, phone: $phone}).done(
+              function(data,status) {
+              });
+            });
+
+        }); // end of document ready function
+    </script>
+
 </html>
