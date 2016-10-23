@@ -1,9 +1,10 @@
 var express = require("express")
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
-
+var cookieParser = require('cookie-parser');
 
 var app = express()
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}))
 
 app.get('/', (req, res) => {
@@ -21,6 +22,7 @@ app.post('/login', function(req, res){
           db.collection('users').save(req.body, (err, result) => {
           if (err) return console.log(err)
           console.log('saved to database')
+          res.cookie('email' , req.body['email'])
           res.sendFile(__dirname + '/index.html')
         })
       } 
@@ -29,6 +31,7 @@ app.post('/login', function(req, res){
       }
       else {
         if(document.password == req.body['password']){
+          res.cookie('email' , req.body['email'])
           res.send({ code: '200' })
           console.log("correct login")
         }else{
@@ -38,6 +41,15 @@ app.post('/login', function(req, res){
       }
   })
 })
+
+app.post('/addTask', function(req, res){
+    req.body['email'] = req.cookies['email']
+    db.collection('tasks').save(req.body, (err, result) => {
+      if (err) return console.log(err)
+      console.log('saved to database')
+    })
+})
+
 
 var db
 MongoClient.connect('mongodb://wmorgan1221:morgan11@ds053176.mlab.com:53176/starwars-quotes-test-weston', function(err, database) {
