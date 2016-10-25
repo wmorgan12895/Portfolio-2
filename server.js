@@ -6,13 +6,20 @@ var cookieParser = require('cookie-parser');
 var app = express()
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}))
+app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/login.html')
 })
 
 app.get('/index', (req, res) => {
-  res.sendFile(__dirname + '/index.html')
+  //res.sendFile(__dirname + '/index.html')
+  req.body['email'] = req.cookies['email'];
+  db.collection('tasks').find({email: req.body['email']}).toArray(function(err, results) {
+        if (err) return console.log(err);
+        // renders index.ejs
+        res.render('index.ejs', {tasks: results});
+    });
 })
 
 
@@ -23,7 +30,8 @@ app.post('/login', function(req, res){
           if (err) return console.log(err)
           console.log('saved to database')
           res.cookie('email' , req.body['email'])
-          res.sendFile(__dirname + '/index.html')
+          res.send({ code: '300' })
+          //res.sendFile(__dirname + '/index.html')
         })
       } 
       else if(err){
@@ -47,6 +55,7 @@ app.post('/addTask', function(req, res){
     db.collection('tasks').save(req.body, (err, result) => {
       if (err) return console.log(err)
       console.log('saved to database')
+      res.send();
     })
 })
 
