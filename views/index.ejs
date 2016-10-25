@@ -36,11 +36,14 @@
           $("#addTask").click (function () {
             $taskname = $("#taskname").val()
             $date = $("#date").val()
+            $idate = $date.split('-')
+            $newdate = new Date($idate[0]+"/"+$idate[1]+"/"+$idate[2])
+            $newdate.setHours(0,0,0,0)
             $time = $("#time").val()
             $emailNotify = $("#emailNotify").val()
             $textNotify = $("#textNotify").val()
             $phone = $("#phone").val()
-            $.post("/addTask", {taskname: $taskname, date: $date, time: $time, emailNotify: $emailNotify, textNotify: $textNotify, phone: $phone}).done(
+            $.post("/addTask", {taskname: $taskname, date: $newdate, time: $time, emailNotify: $emailNotify, textNotify: $textNotify, phone: $phone}).done(
               function(data,status) {
                  window.location.replace("/index")
               });
