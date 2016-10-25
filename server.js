@@ -2,6 +2,8 @@ var express = require("express")
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
 var cookieParser = require('cookie-parser');
+ var sg = require('sendgrid')('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') //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
+
 
 var app = express()
 app.use(cookieParser());
@@ -55,6 +57,8 @@ app.post('/addTask', function(req, res){
     db.collection('tasks').save(req.body, (err, result) => {
       if (err) return console.log(err)
       console.log('saved to database')
+      //getTasks()
+      //sendMail(req.body['email'], req.body['taskname'])
       res.send();
     })
 })
@@ -66,5 +70,65 @@ MongoClient.connect('mongodb://wmorgan1221:morgan11@ds053176.mlab.com:53176/star
   db = database
   app.listen(8081, () => {
     console.log('listening on 8081')
+    setInterval(getTasks, 60000);
   })
 })
+
+
+
+function getTasks(){
+  date = new Date()
+  if(date.getMinutes()<10){
+     cTime = date.getHours() +":0"+date.getMinutes()
+  } 
+  else {
+     cTime = date.getHours() +":"+date.getMinutes()
+  }
+  date.setHours(0,0,0,0)
+  console.log(cTime)
+  var cursor = db.collection('tasks').find({date: date.toString(), time: cTime})
+  cursor.forEach(function(doc){
+    if(doc['emailNotify'] == 'on'){
+      console.log("Sending Reminder")
+      sendMail(doc['email'],doc['taskname'])
+    }
+  })
+}
+
+
+function sendMail(email, taskname){
+     var request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: {
+          personalizations: [
+            {
+              to: [
+                {
+                  email: email
+                },
+              ],
+              subject: 'You have a reminder!',
+            },
+          ],
+          from: {
+            email: 'wmorgan1221@gmail.com',
+          },
+          content: [
+            {
+              type: 'text/plain',
+              value: taskname,
+            },
+          ],
+        },
+      });
+      //With callback
+      sg.API(request, function(error, response) {
+        if (error) {
+          console.log('Error response received');
+        }
+        // console.log(response.statusCode);
+        // console.log(response.body);
+        // console.log(response.headers);
+      });
+}

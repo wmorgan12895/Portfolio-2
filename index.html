@@ -19,17 +19,17 @@
  <script>
     $(document).ready(function() {
 
-          $("#addTask").click (function () {
-            $taskname = $("#taskname").val()
-            $date = $("#date").val()
-            $time = $("#time").val()
-            $emailNotify = $("#emailNotify").val()
-            $textNotify = $("#textNotify").val()
-            $phone = $("#phone").val()
-            $.post("/addTask", {taskname: $taskname, date: $date, time: $time, emailNotify: $emailNotify, textNotify: $textNotify, phone: $phone}).done(
-              function(data,status) {
-              });
-            });
+          // $("#addTask").click (function () {
+          //   $taskname = $("#taskname").val()
+          //   $date = $("#date").val()
+          //   $time = $("#time").val()
+          //   $emailNotify = $("#emailNotify").val()
+          //   $textNotify = $("#textNotify").val()
+          //   $phone = $("#phone").val()
+          //   $.post("/addTask", {taskname: $taskname, date: $date, time: $time, emailNotify: $emailNotify, textNotify: $textNotify, phone: $phone}).done(
+          //     function(data,status) {
+          //     });
+          //   });
 
         }); // end of document ready function
     </script>
