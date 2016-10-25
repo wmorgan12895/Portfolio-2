@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <meta charset="UTF-8">
+  <title>MY APP</title>
+</head>
+<body>
+    <h2>Sign Up or Login</h2>
+    <input type="text" placeholder="Email" id="email"><br/>
+    <input type="password" placeholder="password" id="password"><br/>
+    <button type="submit" id = "submit">Submit</button>
+    <p id="note">Note, submit will create a new account if you do not have one.</p>
+</body>
+    <script>
+    $(document).ready(function() {
+
+            $("#submit").click (function () {
+            $email = $("#email").val()
+            $pass = $("#password").val()
+            $.post("/login", {email: $email, password: $pass}).done(
+                    function(data,status) {
+                    console.log(status)
+                    console.log(data)
+                    if(data.code == 100){
+                        $("#note").css('color', 'red')
+                        $("#note").html("Wrong username or password")
+                    }else{
+                        window.location.replace("/index")
+                    }
+            });
+            // that's a callback function!
+            });
+
+        }); // end of document ready function
+    </script>
+</html>
