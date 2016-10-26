@@ -65,7 +65,7 @@ app.post('/addTask', function(req, res){
 
 
 var db
-MongoClient.connect('mongodb://wmorgan1221:morgan11@ds053176.mlab.com:53176/starwars-quotes-test-weston', function(err, database) {
+MongoClient.connect('mongodb://REPLACE_USER_PASS_ HERE@ds053176.mlab.com:53176/starwars-quotes-test-weston', function(err, database) {
   if (err) return console.log(err)
   db = database
   app.listen(8081, () => {
