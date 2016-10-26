@@ -2,7 +2,7 @@ var express = require("express")
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
 var cookieParser = require('cookie-parser');
- var sg = require('sendgrid')('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') //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
+ var sg = require('sendgrid')('apikeygoeshere')
 
 
 var app = express()
