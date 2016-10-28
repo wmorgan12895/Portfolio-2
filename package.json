@@ -7,8 +7,10 @@
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
+    "mongodb": "^2.2.10",
     "sendgrid": "^4.7.0",
-    "mongodb": "^2.2.10"
+    "textmagic-rest-client": "0.0.5",
+    "tropo-webapi": "^1.2.0"
   },
   "devDependencies": {},
   "scripts": {

@@ -2,8 +2,9 @@ var express = require("express")
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
 var cookieParser = require('cookie-parser');
- var sg = require('sendgrid')('apikeygoeshere')
-
+var sg = require('sendgrid')('API_KEY_GOES_HERE')
+var TMClient = require('textmagic-rest-client');
+var http = require('http');
 
 var app = express()
 app.use(cookieParser());
@@ -65,7 +66,7 @@ app.post('/addTask', function(req, res){
 
 
 var db
-MongoClient.connect('mongodb://REPLACE_USER_PASS_ HERE@ds053176.mlab.com:53176/starwars-quotes-test-weston', function(err, database) {
+MongoClient.connect('mongodb://wmorgan1221:morgan11@ds053176.mlab.com:53176/starwars-quotes-test-weston', function(err, database) {
   if (err) return console.log(err)
   db = database
   app.listen(8081, () => {
@@ -91,6 +92,10 @@ function getTasks(){
     if(doc['emailNotify'] == 'on'){
       console.log("Sending Reminder")
       sendMail(doc['email'],doc['taskname'])
+    }
+    if(doc['textNotify'] == 'on') {
+      console.log("Sending Message");
+      sendText(doc['phone'], doc['taskname']);
     }
   })
 }
@@ -131,4 +136,12 @@ function sendMail(email, taskname){
         // console.log(response.body);
         // console.log(response.headers);
       });
+}
+
+function sendText(phoneNumber, taskname) { 
+  var c = new TMClient('TEXT_USER', 'TEXT_API_KEY');
+  console.log('Phone number:' + phoneNumber);
+  c.Messages.send({text: taskname, phones: phoneNumber}, function(err, res){
+    console.log('Messages.send()', err, res);
+  });
 }
