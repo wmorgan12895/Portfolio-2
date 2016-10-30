@@ -1,6 +1,7 @@
 var express = require("express")
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
+var ObjectID = require('mongodb').ObjectID;
 var cookieParser = require('cookie-parser');
 var sg = require('sendgrid')('API_KEY_GOES_HERE')
 var TMClient = require('textmagic-rest-client');
@@ -15,14 +16,20 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/login.html')
 })
 
+app.use(express.static('static'));
+
 app.get('/index', (req, res) => {
   //res.sendFile(__dirname + '/index.html')
   req.body['email'] = req.cookies['email'];
-  db.collection('tasks').find({email: req.body['email']}).toArray(function(err, results) {
-        if (err) return console.log(err);
-        // renders index.ejs
-        res.render('index.ejs', {tasks: results});
-    });
+  if(req.cookies['email']!=""){
+    db.collection('tasks').find({email: req.body['email']}).toArray(function(err, results) {
+          if (err) return console.log(err);
+          // renders index.ejs
+          res.render('index.ejs', {tasks: results});
+    })
+  }else{
+    res.send()
+  }
 })
 
 
@@ -34,7 +41,6 @@ app.post('/login', function(req, res){
           console.log('saved to database')
           res.cookie('email' , req.body['email'])
           res.send({ code: '300' })
-          //res.sendFile(__dirname + '/index.html')
         })
       } 
       else if(err){
@@ -51,6 +57,15 @@ app.post('/login', function(req, res){
         }
       }
   })
+})
+
+app.post('/deleteTask', function(req, res){
+  console.log(req.body["_id"])
+    db.collection('tasks').remove({_id: ObjectID(req.body["_id"])}, (err, result) => {
+      if (err) return console.log(err)
+      console.log('deleted from database')
+      res.send();
+    })
 })
 
 app.post('/addTask', function(req, res){

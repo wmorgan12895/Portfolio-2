@@ -2,15 +2,19 @@
 <html lang="en">
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <meta charset="UTF-8">
   <title>MY APP</title>
 </head>
 <body>
+<div id="login" >
     <h2>Sign Up or Login</h2>
-    <input type="text" placeholder="Email" id="email"><br/>
-    <input type="password" placeholder="password" id="password"><br/>
-    <button type="submit" id = "submit">Submit</button>
+    <input type="text" placeholder="Email" class="form-control" id="email"><br/>
+    <input type="password" placeholder="password" class="form-control" id="password"><br/>
+    <button type="submit" class="btn btn-primary" id = "submit">Submit</button>
     <p id="note">Note, submit will create a new account if you do not have one.</p>
+</div>
 </body>
     <script>
     $(document).ready(function() {

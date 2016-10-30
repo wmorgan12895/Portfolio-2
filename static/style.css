@@ -1,0 +1,32 @@
+#title {
+  margin-left:5%;
+  width: auto;
+  font-size: 36px;
+  color: white;
+}
+#top {
+    background-color:#31698A;
+    height:60px;
+}
+
+#logout {
+    float:right;
+    margin: 13px 10px 0 0;
+}
+
+#mainBody { 
+    margin: 0 20px 40px 20px;
+    height:100vh;
+    background-color:#EEEEEE;
+}
+#login {
+    margin: 10% 20% 40% 20%;
+}
+div {
+    font-family: "Verdana", sans-serif;
+}
+li {
+    list-style-type: none;
+    font-size: 18px;
+    margin: 10px 0 10px 0;
+}

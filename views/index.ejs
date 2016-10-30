@@ -2,33 +2,43 @@
 <html lang="en">
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <meta charset="UTF-8">
+ 
   <title>MY APP</title>
+ 
 </head>
 <body>
-  <h2>home page</h2>
+  <div id = 'top'>
+    <span id ="title" >Your Homepage</span>
+    <button type="button" id="logout" class="top btn btn-default">Logout</button>
+  </div>
+  <div id= "mainBody">
+    <h2>Create a new task</h4>
+    <div align="center" class="form-inline" id="taskForm">
+      Task Name<input type = 'text' class="form-control" id = 'taskname'/>
+      Date of Task<input type = 'date'class="form-control" id='date'/>
+      Time<input type='time' class="form-control" id='time'/>
+      Email Notification<select id="emailNotify" class="form-control"> <option value="off">off</option> <option value="on">on</option></select>
+      Text Notification<select id="textNotify" class="form-control"> <option value="off">off</option> <option value="on">on</option></select>
+      Phone Number<input type = 'text' class="form-control" id='phone'/>
+      <input type = 'button' class="btn btn-primary" id='addTask' value = 'Add task'/>
+    </div>
+    
 
-  Task Name<input type = 'text' id = 'taskname'/>
-  Date of Task<input type = 'date' id='date'/>
-  Time<input type='time' id='time'/>
-  Email Notification<select id="emailNotify"> <option value="off">off</option> <option value="on">on</option></select>
-  Text Notification<select id="textNotify"/> <option value="off">off</option> <option value="on">on</option></select>
-  Phone Number<input type = 'text' id='phone'/>
-  <input type = 'button' id='addTask' value = 'Add task'/>
-  <div id = 'tasks'></div>
-
-  <br>
-  Current Tasks:
-  <ul class="tasks">
-  <% for(var i=0; i<tasks.length; i++) {%>
-    <li class="task">
-      <span><%= tasks[i].taskname %></span>
-      <span><%= tasks[i].date %></span>
-      <span><%= tasks[i].time %></span>
-    </li>
-  <% } %>
-  </ul>
-
+    <br>
+    <h2>Current Tasks:</h2>
+    <ul class="tasks">
+    <% for(var i=tasks.length-1; i>=0; i--) {%>
+      <li class="task">
+        <span><%= tasks[i].taskname %></span>
+        <span><%= tasks[i].date %></span>
+        <span><button type="button" class="btn btn-danger" id="<%= tasks[i]._id %>" >Delete</button></span>
+      </li>
+    <% } %>
+    </ul>
+</div>
 </body>
  <script>
     $(document).ready(function() {
@@ -46,10 +56,21 @@
             $.post("/addTask", {taskname: $taskname, date: $newdate, time: $time, emailNotify: $emailNotify, textNotify: $textNotify, phone: $phone}).done(
               function(data,status) {
                  window.location.replace("/index")
-              });
-            });
-
+              })
+            })
+          $(".btn-danger").click(function(){
+            $.post("/deleteTask", {_id: this.id}).done(
+              function(data,status) {
+                 window.location.replace("/index")
+              })
+          })
+          $("#logout").click(function(){
+            $.get("/").done(function(data,status){
+                document.cookie = "email= "
+                window.location.replace("/")
+            })
+          })
         }); // end of document ready function
-    </script>
+  </script>
 
 </html>
