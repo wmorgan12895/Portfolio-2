@@ -25,6 +25,14 @@ app.get('/index', (req, res) => {
     db.collection('tasks').find({email: req.body['email']}).toArray(function(err, results) {
           if (err) return console.log(err);
           // renders index.ejs
+          function sortfunction(a, b) {
+            aDate = new Date(a.date);
+            bDate = new Date(b.date);
+            if(aDate < bDate) { return 1; }
+            if(aDate > bDate) { return -1; }
+            else { return 0; }
+          }
+          results.sort(sortfunction);
           res.render('index.ejs', {tasks: results});
     })
   }else{
@@ -70,6 +78,7 @@ app.post('/deleteTask', function(req, res){
 
 app.post('/addTask', function(req, res){
     req.body['email'] = req.cookies['email']
+    console.log(req.body);
     db.collection('tasks').save(req.body, (err, result) => {
       if (err) return console.log(err)
       console.log('saved to database')
