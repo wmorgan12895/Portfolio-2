@@ -25,7 +25,6 @@ app.get('/index', (req, res) => {
     db.collection('tasks').find({email: req.body['email']}).toArray(function(err, results) {
           if (err) return console.log(err);
           // renders index.ejs
-          console.log(results);
           function sortfunction(a, b) {
             aDate = new Date(a.date);
             bDate = new Date(b.date);
@@ -34,7 +33,6 @@ app.get('/index', (req, res) => {
             else { return 0; }
           }
           results.sort(sortfunction);
-          console.log(results);
           res.render('index.ejs', {tasks: results});
     })
   }else{
